@@ -27,12 +27,20 @@ io.on('connection', function(socket) {
         socket.broadcast.emit('message', message);
     });
 
+    socket.on('typing', function() {
+        socket.broadcast.emit('typing');
+    });
+
+    socket.on('typingpaused', function() {
+        socket.broadcast.emit('typingpaused');
+    });
+
     socket.on('disconnect', function() {
         users--;
         var disconnection = "Client disconnected";
         socket.broadcast.emit('message', disconnection);
         io.emit('users', users);
-    })
+    });
 });
 
 // we now call server.listen rather than app.listen
