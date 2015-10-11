@@ -3,10 +3,15 @@ $(document).ready(function() {
     // Select the input tag and messages div
     var input = $('input');
     var messages = $('#messages');
+    var userCount = $('#users');
 
     // Create a function to append new messages
     var addMessage = function(message) {
         messages.append('<div>' + message + '</div>');
+    };
+
+    var addUserCount = function(users) {
+        userCount.text('users: ' + users);
     };
 
     // When the user presses the enter key in the input box call the addMessage function
@@ -26,4 +31,5 @@ $(document).ready(function() {
     //socket.on('connect', addMessage);
     // add a listener for the broadcast messages and client connections
     socket.on('message', addMessage);
+    socket.on('users', addUserCount)
 });

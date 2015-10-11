@@ -10,10 +10,14 @@ var server = http.Server(app);
 // initialize an io object which is an EventEmitter
 var io = socket_io(server);
 
+var users = 0;
+
 // create a listener to the connection event
 io.on('connection', function(socket) {
+    users++;
     var connection = "Client connected";
     socket.broadcast.emit('message', connection);
+    io.emit('users', users);
 
     // handle the message that the client sends to the server
     socket.on('message', function(message) {
@@ -24,8 +28,10 @@ io.on('connection', function(socket) {
     });
 
     socket.on('disconnect', function() {
+        users--;
         var disconnection = "Client disconnected";
-        socket.broadcast.emit('message', disconnection)
+        socket.broadcast.emit('message', disconnection);
+        io.emit('users', users);
     })
 });
 
