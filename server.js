@@ -10,14 +10,14 @@ var server = http.Server(app);
 // initialize an io object which is an EventEmitter
 var io = socket_io(server);
 
-var users = 0;
+var clients = [];
 
 // create a listener to the connection event
 io.on('connection', function(socket) {
-    users++;
+    clients.push(socket.id);
     var connection = "Client connected";
     socket.broadcast.emit('message', connection);
-    io.emit('users', users);
+    io.emit('users', clients.length);
 
     // handle the message that the client sends to the server
     socket.on('message', function(message) {
@@ -36,10 +36,10 @@ io.on('connection', function(socket) {
     });
 
     socket.on('disconnect', function() {
-        users--;
+        clients.splice(clients.indexOf(socket.id), 1);
         var disconnection = "Client disconnected";
         socket.broadcast.emit('message', disconnection);
-        io.emit('users', users);
+        io.emit('users', clients.length);
     });
 });
 
