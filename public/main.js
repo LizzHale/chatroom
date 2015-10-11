@@ -12,6 +12,7 @@ $(document).ready(function() {
     // When the user presses the enter key in the input box call the addMessage function
     input.on('keydown', function(event) {
         if (event.keyCode != 13) {
+            // Add "{user} is typing" functionality
             return;
         }
 
@@ -22,6 +23,7 @@ $(document).ready(function() {
         input.val('');
     });
 
-    // add a listener for the broadcast messages
+    //socket.on('connect', addMessage);
+    // add a listener for the broadcast messages and client connections
     socket.on('message', addMessage);
 });

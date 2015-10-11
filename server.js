@@ -12,7 +12,8 @@ var io = socket_io(server);
 
 // create a listener to the connection event
 io.on('connection', function(socket) {
-    console.log('Client connected');
+    var connection = "Client connected";
+    socket.broadcast.emit('message', connection);
 
     // handle the message that the client sends to the server
     socket.on('message', function(message) {
@@ -21,6 +22,11 @@ io.on('connection', function(socket) {
         // this will send messages to all clients except the client whose socket object you are using
         socket.broadcast.emit('message', message);
     });
+
+    socket.on('disconnect', function() {
+        var disconnection = "Client disconnected";
+        socket.broadcast.emit('message', disconnection)
+    })
 });
 
 // we now call server.listen rather than app.listen
