@@ -25,10 +25,11 @@ io.on('connection', function(socket) {
 
     // handle the message that the client sends to the server
     socket.on('message', function(message) {
-        console.log('Received message:', message);
+        clientName = people[socket.id];
+        var send = clientName + ' says: ' + message;
         // broadcast the message to any other clients who are connected
         // this will send messages to all clients except the client whose socket object you are using
-        socket.broadcast.emit('message', message);
+        socket.emit('message', send);
     });
 
     socket.on('typing', function() {
