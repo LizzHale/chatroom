@@ -9,15 +9,19 @@ app.use(express.static('public'));
 var server = http.Server(app);
 // initialize an io object which is an EventEmitter
 var io = socket_io(server);
-
+var people = {};
 var clients = [];
 
 // create a listener to the connection event
 io.on('connection', function(socket) {
-    clients.push(socket.id);
-    var connection = "Client connected";
-    socket.broadcast.emit('message', connection);
-    io.emit('users', clients.length);
+    socket.on('join', function(name) {
+        people[socket.id] = name;
+        clients.push(socket.id);
+        var connection = name + " connected";
+        socket.emit('message', 'You have connected to the server');
+        socket.broadcast.emit('message', connection);
+        io.emit('users', clients.length);
+    });
 
     // handle the message that the client sends to the server
     socket.on('message', function(message) {
@@ -36,8 +40,9 @@ io.on('connection', function(socket) {
     });
 
     socket.on('disconnect', function() {
+        clientName = people[socket.id];
         clients.splice(clients.indexOf(socket.id), 1);
-        var disconnection = "Client disconnected";
+        var disconnection = clientName + " disconnected";
         socket.broadcast.emit('message', disconnection);
         io.emit('users', clients.length);
     });
