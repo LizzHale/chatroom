@@ -49,8 +49,7 @@ $(document).ready(function() {
 
         removeTypingUser();
         var message = input.val();
-        console.log(message);
-        addMessage(message);
+        addMessage('You said: ' + message);
         // send a message to the server when we send a message
         socket.emit('message', message);
         input.val('');

@@ -29,7 +29,7 @@ io.on('connection', function(socket) {
         var send = clientName + ' says: ' + message;
         // broadcast the message to any other clients who are connected
         // this will send messages to all clients except the client whose socket object you are using
-        socket.emit('message', send);
+        socket.broadcast.emit('message', send);
     });
 
     socket.on('typing', function() {
