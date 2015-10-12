@@ -32,7 +32,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('typing', function() {
-        socket.broadcast.emit('typing');
+        socket.broadcast.emit('typing', people[socket.id]);
     });
 
     socket.on('typingpaused', function() {

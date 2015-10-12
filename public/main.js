@@ -18,8 +18,8 @@ $(document).ready(function() {
         userCount.text('users: ' + users);
     };
 
-    var displayTypingUser = function() {
-        typist.text('someone is typing');
+    var displayTypingUser = function(username) {
+        typist.text(username + ' is typing');
     };
 
     var removeTypingUser = function() {
